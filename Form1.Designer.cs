@@ -28,12 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.lbSymbols = new System.Windows.Forms.ListBox();
             this.pbMain = new System.Windows.Forms.ProgressBar();
             this.btnClearData = new System.Windows.Forms.Button();
             this.btnGetQuotes = new System.Windows.Forms.Button();
             this.btnCharts = new System.Windows.Forms.Button();
+            this.chartQuotes = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)(this.chartQuotes)).BeginInit();
             this.SuspendLayout();
             // 
             // btnUpdate
@@ -107,11 +111,25 @@
             this.btnCharts.UseVisualStyleBackColor = false;
             this.btnCharts.Click += new System.EventHandler(this.btnDisplayCharts);
             // 
+            // chartQuotes
+            // 
+            chartArea1.Name = "ChartArea1";
+            this.chartQuotes.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartQuotes.Legends.Add(legend1);
+            this.chartQuotes.Location = new System.Drawing.Point(232, 56);
+            this.chartQuotes.Name = "chartQuotes";
+            this.chartQuotes.Size = new System.Drawing.Size(810, 351);
+            this.chartQuotes.TabIndex = 6;
+            this.chartQuotes.Text = "chart1";
+            this.chartQuotes.Visible = false;
+            // 
             // frmMsin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1117, 450);
+            this.Controls.Add(this.chartQuotes);
             this.Controls.Add(this.btnCharts);
             this.Controls.Add(this.btnGetQuotes);
             this.Controls.Add(this.btnClearData);
@@ -123,6 +141,7 @@
             this.Text = "Quote Tool";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMsin_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.chartQuotes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -135,6 +154,7 @@
         private System.Windows.Forms.Button btnClearData;
         private System.Windows.Forms.Button btnGetQuotes;
         private System.Windows.Forms.Button btnCharts;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartQuotes;
     }
 }
 

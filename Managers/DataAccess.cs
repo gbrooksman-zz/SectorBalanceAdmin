@@ -55,13 +55,17 @@ namespace QuoteTool.Managers
             }
         }
 
-        public static List<Quote> FetchAllQuotes(string name)
+        public static List<Quote> FetchAllQuotes(string name, DateTime startDate, DateTime endDate)
         {
             List<Quote> quoteList = new List<Quote>();
             using (var db = new LiteDatabase(dbPath))
             {
                 var quoteColl = db.GetCollection<Quote>("quotes");
-                quoteList = quoteColl.Find(q => q.Symbol == name).OrderBy(q => q.Date).ToList();
+                quoteList = quoteColl.Find(q => q.Symbol == name 
+                                            && q.Date >= startDate 
+                                            && q.Date <= endDate)
+                                            .OrderBy(q => q.Date)
+                                            .ToList();
             }
             return quoteList;
         }

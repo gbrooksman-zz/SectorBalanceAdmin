@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using QuoteTool.Managers;
 using QuoteTool.Models;
 
@@ -39,6 +40,32 @@ namespace QuoteTool
         private void btnDisplayCharts(object sender, EventArgs e)
         {
 
+            chartQuotes.Height = (int)(this.Height * .8);
+            chartQuotes.Width = (int)(this.Width * .75);
+            chartQuotes.Visible = true;
+
+            DateTime startDate = DateTime.Parse("01/01/2014");
+            DateTime endDate = DateTime.Parse("06/30/2018");
+
+            RenderSeries("XLF", startDate, endDate);
+            RenderSeries("XLE", startDate, endDate);
+            RenderSeries("XLK", startDate, endDate);
+            RenderSeries("XLU", startDate, endDate);
+            RenderSeries("XLY", startDate, endDate);
+            RenderSeries("XLB", startDate, endDate);
+
+        }
+
+        private void RenderSeries(string name, DateTime startDate, DateTime endDate)
+        {
+            List<Quote> xQuotes = DataAccess.FetchAllQuotes(name, startDate, endDate);
+            chartQuotes.Series.Add(name);
+            chartQuotes.Series[name].ChartType = SeriesChartType.Line;
+            xQuotes.ForEach(q => 
+            {
+                int x = 0;
+                chartQuotes.Series[name].Points.AddXY(x, q.Price);
+            });
         }
 
         private void btnFetchQuotes(object sender, EventArgs e)
