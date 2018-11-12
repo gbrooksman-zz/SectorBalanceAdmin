@@ -25,9 +25,14 @@ namespace QuoteTool
             pbMain.Minimum = 0;
             pbMain.Maximum = 100;
 
+            chartQuotes.Height = (int)(this.Height * .8);
+            chartQuotes.Width = (int)(this.Width * .75);
+
+            dtpStart.Value = DateTime.Now.AddYears(-5);
+            dtpStop.Value = DateTime.Now;
+
             ActiveList.Symbols.ForEach(s => {lbSymbols.Items.Add(s.Name);});
         }
-
        
         private void btnGetQuotes_Click(object sender, EventArgs e)
         {
@@ -39,40 +44,53 @@ namespace QuoteTool
 
         private void btnDisplayCharts(object sender, EventArgs e)
         {
+            chartQuotes.Series.Clear();  
 
-            chartQuotes.Height = (int)(this.Height * .8);
-            chartQuotes.Width = (int)(this.Width * .75);
+            DateTime startDate = dtpStart.Value;
+            DateTime endDate = dtpStop.Value;
+
+            foreach (var item in lbSymbols.SelectedItems)
+            {
+                DataRowView drwItem = item as DataRowView;
+                var quoteItem = ActiveList.Symbols.Where(q => q.Name == item.ToString()).First();
+                RenderSeries(quoteItem.Symbol, startDate, endDate, quoteItem.Name);
+            }
+
             chartQuotes.Visible = true;
-
-            DateTime startDate = DateTime.Parse("01/01/2014");
-            DateTime endDate = DateTime.Parse("06/30/2018");
-
-            RenderSeries("XLF", startDate, endDate);
-            RenderSeries("XLE", startDate, endDate);
-            RenderSeries("XLK", startDate, endDate);
-            RenderSeries("XLU", startDate, endDate);
-            RenderSeries("XLY", startDate, endDate);
-            RenderSeries("XLB", startDate, endDate);
-
         }
 
-        private void RenderSeries(string name, DateTime startDate, DateTime endDate)
+        private void RenderSeries(string symbol, DateTime startDate, DateTime endDate, string name)
         {
-            List<Quote> xQuotes = DataAccess.FetchAllQuotes(name, startDate, endDate);
+            List<Quote> xQuotes = DataAccess.FetchAllQuotes(symbol, startDate, endDate);
             chartQuotes.Series.Add(name);
             chartQuotes.Series[name].ChartType = SeriesChartType.Line;
-            xQuotes.ForEach(q => 
+            //int y = 0;
+            //int x = 0;
+            //xQuotes.ForEach(q => 
+            //{
+            //    if (q.Date >= startDate.AddDays(y))
+            //    {
+            //        chartQuotes.Series[name].Points.AddXY(x, q.Price);
+            //    }
+            //    else
+            //    {
+            //        chartQuotes.Series[name].Points.AddXY(x, 0);
+            //    }
+            //    y++;
+            //    x++;
+            //});
+
+            foreach (Quote q in xQuotes)
             {
-                int x = 0;
-                chartQuotes.Series[name].Points.AddXY(x, q.Price);
-            });
+                chartQuotes.Series[name].Points.AddXY(0, q.Price);
+            }
         }
 
         private void btnFetchQuotes(object sender, EventArgs e)
         {
             pbMain.Value = 0;
             pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.FetchFiveYearQuotes(s.Name); });
+            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.FetchFiveYearQuotes(s.Symbol); });
             pbMain.Visible = false;
         }
 
@@ -83,6 +101,11 @@ namespace QuoteTool
             DataAccess.ClearData();
             pbMain.Value = 100;
             pbMain.Visible = false;
+        }      
+
+        private void btnClearItems_Click(object sender, EventArgs e)
+        {
+            lbSymbols.SelectedItems.Clear();
         }
     }
 }

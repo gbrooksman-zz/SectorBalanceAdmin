@@ -33,7 +33,7 @@ namespace QuoteTool.Managers
         {                
             try
             {
-                string responseString = Client.GetStringAsync($"symbols={name}&types=chart&range={url}5y").Result;
+                string responseString = Client.GetStringAsync($"{url}symbols={name}&types=chart&range=5y").Result;
                 ProcessQuoteData(responseString,name);
             }
             catch (Exception e)
@@ -46,7 +46,7 @@ namespace QuoteTool.Managers
         {
             try
             {
-                string responseString = Client.GetStringAsync($"symbols={name}&types=chart&range={url}1d").Result;
+                string responseString = Client.GetStringAsync($"{url}symbols={name}&types=chart&range=1d").Result;
                 ProcessQuoteData(responseString, name);
             }
             catch (Exception e)
