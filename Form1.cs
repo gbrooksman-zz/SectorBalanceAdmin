@@ -22,6 +22,8 @@ namespace QuoteTool
 
         private void frmMsin_Load(object sender, EventArgs e)
         {
+            DataAccess.Init();
+
             pbMain.Minimum = 0;
             pbMain.Maximum = 100;
 
@@ -32,13 +34,16 @@ namespace QuoteTool
             dtpStop.Value = DateTime.Now;
 
             ActiveList.Symbols.ForEach(s => {lbSymbols.Items.Add(s.Name);});
+
+            txtLastDate.Text = DataAccess.GetMaxDate().Date.ToShortDateString();
         }
        
         private void btnGetQuotes_Click(object sender, EventArgs e)
         {
+            DateTime date = DataAccess.GetMaxDate().Date;
             pbMain.Value = 0;
             pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.GetDayQuote(s.Name); });
+            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.GetDateQuote(s.Name, date); });
             pbMain.Visible = false;
         }
 
@@ -64,26 +69,17 @@ namespace QuoteTool
             List<Quote> xQuotes = DataAccess.FetchAllQuotes(symbol, startDate, endDate);
             chartQuotes.Series.Add(name);
             chartQuotes.Series[name].ChartType = SeriesChartType.Line;
-            //int y = 0;
-            //int x = 0;
-            //xQuotes.ForEach(q => 
-            //{
-            //    if (q.Date >= startDate.AddDays(y))
-            //    {
-            //        chartQuotes.Series[name].Points.AddXY(x, q.Price);
-            //    }
-            //    else
-            //    {
-            //        chartQuotes.Series[name].Points.AddXY(x, 0);
-            //    }
-            //    y++;
-            //    x++;
-            //});
 
-            foreach (Quote q in xQuotes)
+
+            Quote firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(1).Date).FirstOrDefault();
+
+            decimal firstPrice = 0;
+            if (rbRelative.Checked) firstPrice = firstQuote.Price;
+
+            xQuotes.ForEach(q =>
             {
-                chartQuotes.Series[name].Points.AddXY(0, q.Price);
-            }
+                chartQuotes.Series[name].Points.AddXY(0, q.Price - firstPrice);
+            });
         }
 
         private void btnFetchQuotes(object sender, EventArgs e)

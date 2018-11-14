@@ -42,6 +42,10 @@
             this.lblStatrDate = new System.Windows.Forms.Label();
             this.lblStopDate = new System.Windows.Forms.Label();
             this.btnClearItems = new System.Windows.Forms.Button();
+            this.rbAbsolute = new System.Windows.Forms.RadioButton();
+            this.rbRelative = new System.Windows.Forms.RadioButton();
+            this.txtLastDate = new System.Windows.Forms.TextBox();
+            this.lblLastFetch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartQuotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,7 +77,7 @@
             // pbMain
             // 
             this.pbMain.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pbMain.Location = new System.Drawing.Point(0, 477);
+            this.pbMain.Location = new System.Drawing.Point(0, 603);
             this.pbMain.Name = "pbMain";
             this.pbMain.Size = new System.Drawing.Size(1117, 23);
             this.pbMain.TabIndex = 2;
@@ -182,11 +186,57 @@
             this.btnClearItems.UseVisualStyleBackColor = false;
             this.btnClearItems.Click += new System.EventHandler(this.btnClearItems_Click);
             // 
+            // rbAbsolute
+            // 
+            this.rbAbsolute.AutoSize = true;
+            this.rbAbsolute.Checked = true;
+            this.rbAbsolute.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbAbsolute.Location = new System.Drawing.Point(12, 470);
+            this.rbAbsolute.Name = "rbAbsolute";
+            this.rbAbsolute.Size = new System.Drawing.Size(90, 24);
+            this.rbAbsolute.TabIndex = 12;
+            this.rbAbsolute.TabStop = true;
+            this.rbAbsolute.Text = "Absolute";
+            this.rbAbsolute.UseVisualStyleBackColor = true;
+            // 
+            // rbRelative
+            // 
+            this.rbRelative.AutoSize = true;
+            this.rbRelative.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbRelative.Location = new System.Drawing.Point(12, 500);
+            this.rbRelative.Name = "rbRelative";
+            this.rbRelative.Size = new System.Drawing.Size(84, 24);
+            this.rbRelative.TabIndex = 13;
+            this.rbRelative.Text = "Relative";
+            this.rbRelative.UseVisualStyleBackColor = true;
+            // 
+            // txtLastDate
+            // 
+            this.txtLastDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLastDate.Location = new System.Drawing.Point(12, 560);
+            this.txtLastDate.Name = "txtLastDate";
+            this.txtLastDate.Size = new System.Drawing.Size(196, 26);
+            this.txtLastDate.TabIndex = 14;
+            // 
+            // lblLastFetch
+            // 
+            this.lblLastFetch.AutoSize = true;
+            this.lblLastFetch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLastFetch.Location = new System.Drawing.Point(13, 537);
+            this.lblLastFetch.Name = "lblLastFetch";
+            this.lblLastFetch.Size = new System.Drawing.Size(124, 20);
+            this.lblLastFetch.TabIndex = 15;
+            this.lblLastFetch.Text = "Last Fetch Date";
+            // 
             // frmMsin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1117, 500);
+            this.ClientSize = new System.Drawing.Size(1117, 626);
+            this.Controls.Add(this.lblLastFetch);
+            this.Controls.Add(this.txtLastDate);
+            this.Controls.Add(this.rbRelative);
+            this.Controls.Add(this.rbAbsolute);
             this.Controls.Add(this.btnClearItems);
             this.Controls.Add(this.lblStopDate);
             this.Controls.Add(this.lblStatrDate);
@@ -224,6 +274,10 @@
         private System.Windows.Forms.Label lblStatrDate;
         private System.Windows.Forms.Label lblStopDate;
         private System.Windows.Forms.Button btnClearItems;
+        private System.Windows.Forms.RadioButton rbAbsolute;
+        private System.Windows.Forms.RadioButton rbRelative;
+        private System.Windows.Forms.TextBox txtLastDate;
+        private System.Windows.Forms.Label lblLastFetch;
     }
 }
 

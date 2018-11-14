@@ -27,8 +27,18 @@ namespace QuoteTool.Managers
             {
                 db.DropCollection("quotes");
             }
-        }        
+        }
 
+        public static void Init()
+        {
+            using (var db = new LiteDatabase(dbPath))
+            {
+                var quoteColl = db.GetCollection<Quote>("quotes");
+                quoteColl.EnsureIndex(x => x.Symbol);
+                quoteColl.EnsureIndex(x => x.Date);
+            }
+        }
+        
         public static void FetchFiveYearQuotes(string name)
         {                
             try
@@ -55,6 +65,44 @@ namespace QuoteTool.Managers
             }
         }
 
+        public static void GetDateQuote(string name, DateTime date)
+        {
+            try
+            {
+                string url = $"https://api.iextrading.com/1.0/stock/{name}/chart/1m";
+
+                string responseString = Client.GetStringAsync(url).Result;
+
+                using (var db = new LiteDatabase(dbPath))
+                {
+                    var quoteColl = db.GetCollection<Quote>("quotes");
+
+                    JObject quotes = JObject.Parse(responseString);
+                    JArray quoteArray = (JArray)quotes[name]["chart"];
+
+                    foreach (var stock in quoteArray)
+                    {
+                        Quote quote = new Quote
+                        {
+                            Date = DateTime.Parse(stock["date"].ToString()).Date,
+                            Price = decimal.Parse(stock["close"].ToString()),
+                            Symbol = name,
+                            Volume = stock["volume"].ToString()
+                        };
+
+                        if (quote.Date.Date >= date.Date)
+                        {
+                            quoteColl.Insert(quote);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         public static List<Quote> FetchAllQuotes(string name, DateTime startDate, DateTime endDate)
         {
             List<Quote> quoteList = new List<Quote>();
@@ -70,12 +118,20 @@ namespace QuoteTool.Managers
             return quoteList;
         }
 
+        public static DateTime GetMaxDate()
+        {
+            using (var db = new LiteDatabase(dbPath))
+            {
+                var quoteColl = db.GetCollection<Quote>("quotes");
+                return quoteColl.Max(q => q.Date).AsDateTime;
+            }
+        }
+
         private static void ProcessQuoteData(string responseString, string name)
         {
             using (var db = new LiteDatabase(dbPath))
             {
                 var quoteColl = db.GetCollection<Quote>("quotes");
-                quoteColl.EnsureIndex(x => x.Symbol);
 
                 JObject quotes = JObject.Parse(responseString);
                 JArray quoteArray = (JArray)quotes[name]["chart"];
