@@ -10,33 +10,34 @@ namespace QuoteTool.Managers
 {
     public class NumberCruncher
     {
-        //private List<Quote> XLFQuotes = new List<Quote>();
-        //private List<Quote> XLKQuotes = new List<Quote>();
-        //private List<Quote> XLEQuotes = new List<Quote>();
-        //private List<Quote> XLREQuotes = new List<Quote>();
-        //private List<Quote> XLPQuotes = new List<Quote>();
-        //private List<Quote> XLVQuotes = new List<Quote>();
-        //private List<Quote> XLUQuotes = new List<Quote>();
-        //private List<Quote> XLBQuotes = new List<Quote>();
-        //private List<Quote> XLYQuotes = new List<Quote>();
-        //private List<Quote> XLIQuotes = new List<Quote>();
+        private readonly List<Quote> XLFQuotes = new List<Quote>();
+        private readonly List<Quote> XLKQuotes = new List<Quote>();
+        private readonly List<Quote> XLEQuotes = new List<Quote>();
+        private readonly List<Quote> XLREQuotes = new List<Quote>();
+        private readonly List<Quote> XLPQuotes = new List<Quote>();
+        private readonly List<Quote> XLVQuotes = new List<Quote>();
+        private readonly List<Quote> XLUQuotes = new List<Quote>();
+        private readonly List<Quote> XLBQuotes = new List<Quote>();
+        private readonly List<Quote> XLYQuotes = new List<Quote>();
+        private readonly List<Quote> XLIQuotes = new List<Quote>();
 
-        //public NumberCruncher()
-        //{
-        //    XLKQuotes = DataAccess.FetchAllQuotes("XLK");
-        //    XLEQuotes = DataAccess.FetchAllQuotes("XLE");
-        //    XLPQuotes = DataAccess.FetchAllQuotes("XLP");
-        //    XLVQuotes = DataAccess.FetchAllQuotes("XLV");
-        //    XLUQuotes = DataAccess.FetchAllQuotes("XLU");
-        //    XLREQuotes = DataAccess.FetchAllQuotes("XLRE");
-        //    XLYQuotes = DataAccess.FetchAllQuotes("XLY");
-        //    XLBQuotes = DataAccess.FetchAllQuotes("XLB");
-        //    XLEQuotes = DataAccess.FetchAllQuotes("XLF");
-        //    XLIQuotes = DataAccess.FetchAllQuotes("XLI");
-        //}
-
-        public void CompareQuoteHistory()
+        public NumberCruncher(DateTime startDate, DateTime endDate)
         {
+            XLKQuotes = DataAccess.LookupAllQuotes("XLK", startDate, endDate);
+            XLEQuotes = DataAccess.LookupAllQuotes("XLE", startDate, endDate);
+            XLPQuotes = DataAccess.LookupAllQuotes("XLP", startDate, endDate);
+            XLVQuotes = DataAccess.LookupAllQuotes("XLV", startDate, endDate);
+            XLUQuotes = DataAccess.LookupAllQuotes("XLU", startDate, endDate);
+            XLREQuotes = DataAccess.LookupAllQuotes("XLRE", startDate, endDate);
+            XLYQuotes = DataAccess.LookupAllQuotes("XLY", startDate, endDate);
+            XLBQuotes = DataAccess.LookupAllQuotes("XLB", startDate, endDate);
+            XLEQuotes = DataAccess.LookupAllQuotes("XLF", startDate, endDate);
+            XLIQuotes = DataAccess.LookupAllQuotes("XLI", startDate, endDate);
+        }
+
+        public void CompareQuoteHistory(List<string> symbolList)
+        {
+            
 
         }
 

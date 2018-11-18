@@ -39,12 +39,12 @@ namespace QuoteTool.Managers
             }
         }
         
-        public static void FetchFiveYearQuotes(string name)
+        public static void FetchFiveYearQuotes(string symbol)
         {                
             try
             {
-                string responseString = Client.GetStringAsync($"{url}symbols={name}&types=chart&range=5y").Result;
-                ProcessQuoteData(responseString,name);
+                string responseString = Client.GetStringAsync($"{url}symbols={symbol}&types=chart&range=5y").Result;
+                ProcessQuoteData(responseString, symbol);
             }
             catch (Exception e)
             {
@@ -52,12 +52,12 @@ namespace QuoteTool.Managers
             }
         }
 
-        public static void GetDayQuote(string name)
+        public static void GetDayQuote(string symbol)
         {
             try
             {
-                string responseString = Client.GetStringAsync($"{url}symbols={name}&types=chart&range=1d").Result;
-                ProcessQuoteData(responseString, name);
+                string responseString = Client.GetStringAsync($"{url}symbols={symbol}&types=chart&range=1d").Result;
+                ProcessQuoteData(responseString, symbol);
             }
             catch (Exception e)
             {
@@ -65,20 +65,18 @@ namespace QuoteTool.Managers
             }
         }
 
-        public static void GetDateQuote(string name, DateTime date)
+        public static void GetDateQuote(string symbol, DateTime date)
         {
             try
             {
-                string url = $"https://api.iextrading.com/1.0/stock/{name}/chart/1m";
-
-                string responseString = Client.GetStringAsync(url).Result;
+                string responseString = Client.GetStringAsync($"{url}symbols={symbol}&types=chart&range=1y").Result;
 
                 using (var db = new LiteDatabase(dbPath))
                 {
                     var quoteColl = db.GetCollection<Quote>("quotes");
 
                     JObject quotes = JObject.Parse(responseString);
-                    JArray quoteArray = (JArray)quotes[name]["chart"];
+                    JArray quoteArray = (JArray)quotes[symbol]["chart"];
 
                     foreach (var stock in quoteArray)
                     {
@@ -86,7 +84,7 @@ namespace QuoteTool.Managers
                         {
                             Date = DateTime.Parse(stock["date"].ToString()).Date,
                             Price = decimal.Parse(stock["close"].ToString()),
-                            Symbol = name,
+                            Symbol = symbol,
                             Volume = stock["volume"].ToString()
                         };
 
@@ -103,13 +101,13 @@ namespace QuoteTool.Managers
             }
         }
 
-        public static List<Quote> FetchAllQuotes(string name, DateTime startDate, DateTime endDate)
+        public static List<Quote> LookupAllQuotes(string symbol, DateTime startDate, DateTime endDate)
         {
             List<Quote> quoteList = new List<Quote>();
             using (var db = new LiteDatabase(dbPath))
             {
                 var quoteColl = db.GetCollection<Quote>("quotes");
-                quoteList = quoteColl.Find(q => q.Symbol == name 
+                quoteList = quoteColl.Find(q => q.Symbol == symbol
                                             && q.Date >= startDate 
                                             && q.Date <= endDate)
                                             .OrderBy(q => q.Date)

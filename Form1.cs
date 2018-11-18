@@ -27,15 +27,26 @@ namespace QuoteTool
             pbMain.Minimum = 0;
             pbMain.Maximum = 100;
 
+            chartQuotes.Visible = false;
             chartQuotes.Height = (int)(this.Height * .8);
             chartQuotes.Width = (int)(this.Width * .75);
+            chartQuotes.Top = 60;
+            chartQuotes.Left = 250;
+
+            rtbAnalysis.Visible = false;
+            rtbAnalysis.Height = (int)(this.Height * .8);
+            rtbAnalysis.Width = (int)(this.Width * .75);
+            rtbAnalysis.Top = 60;
+            rtbAnalysis.Left = 250;
 
             dtpStart.Value = DateTime.Now.AddYears(-5);
             dtpStop.Value = DateTime.Now;
 
-            ActiveList.Symbols.ForEach(s => {lbSymbols.Items.Add(s.Name);});
+            ActiveList.Symbols.ForEach(s => { lbSymbols.Items.Add(s.Name); });
 
-            txtLastDate.Text = DataAccess.GetMaxDate().Date.ToShortDateString();
+            UpdateLastQuoteDate();
+
+            this.Refresh();
         }
        
         private void btnGetQuotes_Click(object sender, EventArgs e)
@@ -43,12 +54,21 @@ namespace QuoteTool
             DateTime date = DataAccess.GetMaxDate().Date;
             pbMain.Value = 0;
             pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.GetDateQuote(s.Name, date); });
+            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.GetDateQuote(s.Symbol, date); });
+            UpdateLastQuoteDate();
             pbMain.Visible = false;
+
+            this.Refresh();
+        }
+
+        private void UpdateLastQuoteDate()
+        {           
+            txtLastDate.Text = DataAccess.GetMaxDate().Date.ToShortDateString();
         }
 
         private void btnDisplayCharts(object sender, EventArgs e)
         {
+            rtbAnalysis.Visible = false;
             chartQuotes.Series.Clear();  
 
             DateTime startDate = dtpStart.Value;
@@ -66,15 +86,24 @@ namespace QuoteTool
 
         private void RenderSeries(string symbol, DateTime startDate, DateTime endDate, string name)
         {
-            List<Quote> xQuotes = DataAccess.FetchAllQuotes(symbol, startDate, endDate);
+            List<Quote> xQuotes = DataAccess.LookupAllQuotes(symbol, startDate, endDate);
             chartQuotes.Series.Add(name);
             chartQuotes.Series[name].ChartType = SeriesChartType.Line;
-
-
-            Quote firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(1).Date).FirstOrDefault();
-
+            
             decimal firstPrice = 0;
-            if (rbRelative.Checked) firstPrice = firstQuote.Price;
+            if (rbRelative.Checked)
+            {
+                Quote firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(1).Date).FirstOrDefault();
+                if (firstQuote == null)
+                {
+                    firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(2).Date).FirstOrDefault();
+                }
+                if (firstQuote == null)
+                {
+                    firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(3).Date).FirstOrDefault();
+                }
+                firstPrice = firstQuote.Price;
+            }
 
             xQuotes.ForEach(q =>
             {
@@ -101,7 +130,22 @@ namespace QuoteTool
 
         private void btnClearItems_Click(object sender, EventArgs e)
         {
+            ClearSymbolsListBox();
+        }
+
+        private void ClearSymbolsListBox()
+        {
             lbSymbols.SelectedItems.Clear();
+        }
+
+        private void btnAnalyze_Click(object sender, EventArgs e)
+        {
+            chartQuotes.Visible = false;
+
+            DateTime startDate = dtpStart.Value;
+            DateTime endDate = dtpStop.Value;
+
+            rtbAnalysis.Visible = true;
         }
     }
 }

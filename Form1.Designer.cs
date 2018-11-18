@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.lbSymbols = new System.Windows.Forms.ListBox();
             this.pbMain = new System.Windows.Forms.ProgressBar();
@@ -46,6 +46,8 @@
             this.rbRelative = new System.Windows.Forms.RadioButton();
             this.txtLastDate = new System.Windows.Forms.TextBox();
             this.lblLastFetch = new System.Windows.Forms.Label();
+            this.btnAnalyze = new System.Windows.Forms.Button();
+            this.rtbAnalysis = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chartQuotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -125,13 +127,13 @@
             // 
             this.chartQuotes.BorderSkin.BackColor = System.Drawing.Color.Black;
             this.chartQuotes.BorderSkin.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid;
-            chartArea1.Name = "ChartArea1";
-            this.chartQuotes.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartQuotes.Legends.Add(legend1);
-            this.chartQuotes.Location = new System.Drawing.Point(232, 56);
+            chartArea2.Name = "ChartArea1";
+            this.chartQuotes.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartQuotes.Legends.Add(legend2);
+            this.chartQuotes.Location = new System.Drawing.Point(1053, 449);
             this.chartQuotes.Name = "chartQuotes";
-            this.chartQuotes.Size = new System.Drawing.Size(810, 351);
+            this.chartQuotes.Size = new System.Drawing.Size(43, 45);
             this.chartQuotes.TabIndex = 6;
             this.chartQuotes.Text = "chart1";
             this.chartQuotes.Visible = false;
@@ -228,11 +230,34 @@
             this.lblLastFetch.TabIndex = 15;
             this.lblLastFetch.Text = "Last Fetch Date";
             // 
+            // btnAnalyze
+            // 
+            this.btnAnalyze.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnAnalyze.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnAnalyze.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAnalyze.Location = new System.Drawing.Point(820, 12);
+            this.btnAnalyze.Name = "btnAnalyze";
+            this.btnAnalyze.Size = new System.Drawing.Size(196, 32);
+            this.btnAnalyze.TabIndex = 16;
+            this.btnAnalyze.Text = "Analyze";
+            this.btnAnalyze.UseVisualStyleBackColor = false;
+            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
+            // 
+            // rtbAnalysis
+            // 
+            this.rtbAnalysis.Location = new System.Drawing.Point(244, 56);
+            this.rtbAnalysis.Name = "rtbAnalysis";
+            this.rtbAnalysis.Size = new System.Drawing.Size(100, 96);
+            this.rtbAnalysis.TabIndex = 17;
+            this.rtbAnalysis.Text = "";
+            // 
             // frmMsin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1117, 626);
+            this.Controls.Add(this.rtbAnalysis);
+            this.Controls.Add(this.btnAnalyze);
             this.Controls.Add(this.lblLastFetch);
             this.Controls.Add(this.txtLastDate);
             this.Controls.Add(this.rbRelative);
@@ -278,6 +303,8 @@
         private System.Windows.Forms.RadioButton rbRelative;
         private System.Windows.Forms.TextBox txtLastDate;
         private System.Windows.Forms.Label lblLastFetch;
+        private System.Windows.Forms.Button btnAnalyze;
+        private System.Windows.Forms.RichTextBox rtbAnalysis;
     }
 }
 
