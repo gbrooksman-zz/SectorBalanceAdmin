@@ -1,24 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LiteDB;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace QuoteTool.Models
 {
-    public class Quote
+    [Table("quotes")]
+    public class Quote : BaseEntity
     {
-        public Quote() { }
-        
-        public string Symbol { get; set; }
+        public Quote()
+        {
 
+        }
+
+        [Key]
+        [Column("date")]
         public DateTime Date { get; set; }
 
+        [Key]
+        [Column("equity_id")]
+        public Guid EquityId { get; set; }
+
+        [Column("price")]
         public decimal Price { get; set; }
 
-        public string Volume { get; set; }
+        [Column("volume")]
+        public int Volume { get; set; }
 
-        public int Id { get; set; }
+        [Column("rate_of_change")]
+        public decimal RateOfChange { get; set; }
     }
 }

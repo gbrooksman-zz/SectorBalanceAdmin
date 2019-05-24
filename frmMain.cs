@@ -20,12 +20,9 @@ namespace QuoteTool
             InitializeComponent();
         }
 
-        private void frmMsin_Load(object sender, EventArgs e)
+        private void FrmMsin_Load(object sender, EventArgs e)
         {
             DataAccess.Init();
-
-            pbMain.Minimum = 0;
-            pbMain.Maximum = 100;
 
             chartQuotes.Visible = false;
             chartQuotes.Height = (int)(this.Height * .8);
@@ -49,16 +46,16 @@ namespace QuoteTool
             this.Refresh();
         }
        
-        private void btnGetQuotes_Click(object sender, EventArgs e)
+        private void BtnGetQuotes_Click(object sender, EventArgs e)
         {
-            DateTime date = DataAccess.GetMaxDate().Date;
-            pbMain.Value = 0;
-            pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.GetDateQuote(s.Symbol, date); });
-            UpdateLastQuoteDate();
-            pbMain.Visible = false;
+            //DateTime date = DataAccess.GetMaxDate().Date;
+            //pbMain.Value = 0;
+            //pbMain.Visible = true;
+            //ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.AddQuoteForDate(s.Symbol, date); });
+            //UpdateLastQuoteDate();
+            //pbMain.Visible = false;
 
-            this.Refresh();
+            //this.Refresh();
         }
 
         private void UpdateLastQuoteDate()
@@ -66,10 +63,10 @@ namespace QuoteTool
             txtLastDate.Text = DataAccess.GetMaxDate().Date.ToShortDateString();
         }
 
-        private void btnDisplayCharts(object sender, EventArgs e)
+        private void BtnDisplayCharts(object sender, EventArgs e)
         {
             rtbAnalysis.Visible = false;
-            chartQuotes.Series.Clear();  
+            chartQuotes.Series.Clear();
 
             DateTime startDate = dtpStart.Value;
             DateTime endDate = dtpStop.Value;
@@ -85,11 +82,11 @@ namespace QuoteTool
         }
 
         private void RenderSeries(string symbol, DateTime startDate, DateTime endDate, string name)
-        {
+        {           
             List<Quote> xQuotes = DataAccess.LookupAllQuotes(symbol, startDate, endDate);
             chartQuotes.Series.Add(name);
             chartQuotes.Series[name].ChartType = SeriesChartType.Line;
-            
+
             decimal firstPrice = 0;
             if (rbRelative.Checked)
             {
@@ -111,24 +108,41 @@ namespace QuoteTool
             });
         }
 
-        private void btnFetchQuotes(object sender, EventArgs e)
+
+        private void RenderRateOfChangeSeries(string symbol, DateTime startDate, DateTime endDate, string name)
         {
-            pbMain.Value = 0;
-            pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.FetchFiveYearQuotes(s.Symbol); });
-            pbMain.Visible = false;
+            List<Quote> xQuotes = DataAccess.LookupAllQuotes(symbol, startDate, endDate);
+            chartQuotes.Series.Add(name);
+            chartQuotes.Series[name].ChartType = SeriesChartType.Line;
+
+            decimal firstRate = 0;
+            if (rbRelative.Checked)
+            {
+                Quote firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(1).Date).FirstOrDefault();
+                if (firstQuote == null)
+                {
+                    firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(2).Date).FirstOrDefault();
+                }
+                if (firstQuote == null)
+                {
+                    firstQuote = xQuotes.Where(q => q.Date.Date == startDate.AddDays(3).Date).FirstOrDefault();
+                }
+                firstRate = firstQuote.RateOfChange;
+            }
+
+            xQuotes.ForEach(q =>
+            {
+                if ((q.RateOfChange - firstRate) != 0)
+                {
+                    chartQuotes.Series[name].Points.AddXY(0, q.RateOfChange - firstRate);
+                }
+            });
+
         }
 
-        private void btnClearDataClick(object sender, EventArgs e)
-        {
-            pbMain.Value = 0;
-            pbMain.Visible = true;
-            DataAccess.ClearData();
-            pbMain.Value = 100;
-            pbMain.Visible = false;
-        }      
 
-        private void btnClearItems_Click(object sender, EventArgs e)
+
+        private void BtnClearItems_Click(object sender, EventArgs e)
         {
             ClearSymbolsListBox();
         }
@@ -138,14 +152,30 @@ namespace QuoteTool
             lbSymbols.SelectedItems.Clear();
         }
 
+
+
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
-            chartQuotes.Visible = false;
+            rtbAnalysis.Visible = false;
+            chartQuotes.Series.Clear();
 
             DateTime startDate = dtpStart.Value;
             DateTime endDate = dtpStop.Value;
 
-            rtbAnalysis.Visible = true;
+            foreach (var item in lbSymbols.SelectedItems)
+            {
+                DataRowView drwItem = item as DataRowView;
+                var quoteItem = ActiveList.Symbols.Where(q => q.Name == item.ToString()).First();
+                RenderRateOfChangeSeries(quoteItem.Symbol, startDate, endDate, quoteItem.Name);
+            }
+
+            chartQuotes.Visible = true;
+        }
+
+        private void BtnAdmin_Click(object sender, EventArgs e)
+        {
+            frmAdmin f = new frmAdmin();
+            f.Show();
         }
     }
 }
