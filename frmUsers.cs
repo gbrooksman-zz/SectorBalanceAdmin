@@ -25,10 +25,17 @@ namespace QuoteTool
             lvUsers.GridLines = true;
             lvUsers.FullRowSelect = true;
 
-            lvUsers.Columns.Add("UserName", 100);
-            lvUsers.Columns.Add("Active?", 100);
-            lvUsers.Columns.Add("Created", 200);
-            lvUsers.Columns.Add("Updated", 200);
+            lvUsers.Columns.Add("UserName", 200);
+            lvUsers.Columns.Add("Active?", 50);
+            lvUsers.Columns.Add("Created", 100);
+            lvUsers.Columns.Add("Updated", 100);
+
+            LoadUserGrid();
+        }
+
+        private void LoadUserGrid()
+        {
+            lvUsers.Items.Clear();
 
             List<User> userList = DataAccess.GetAllUsers();
 
@@ -43,8 +50,56 @@ namespace QuoteTool
                 itm = new ListViewItem(arr);
                 lvUsers.Items.Add(itm);
             });
+        }
+
+        private void BtnSaveUser_Click(object sender, EventArgs e)
+        {
+            bool isUpdate = Guid.TryParse(txtUserId.Text, out Guid theGuid);
+
+            if (isUpdate)
+            {
+                User user = new User
+                {
+                    UserName = txtUserName.Text,
+                    Password = txtPassword.Text,
+                    Id = Guid.Parse(txtUserId.Text),
+                    Active = chkActive.Checked
+                };
+
+                DataAccess.UpdateUser(user);
+               
+            }
+            else
+            {
+                User user = new User
+                {
+                    UserName = txtUserName.Text,
+                    Password = txtPassword.Text,
+                    Active = chkActive.Checked
+                };
+
+                DataAccess.AddUser(user);
+            }
+
+            LoadUserGrid();
 
 
+
+
+
+        }
+
+        private void LvUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvUsers.SelectedItems.Count == 1)
+            {
+                User user = DataAccess.GetUser(lvUsers.SelectedItems[0].Text);
+
+                txtUserId.Text = user.Id.ToString();
+                txtUserName.Text = user.UserName;
+                txtPassword.Text = user.Password;
+                chkActive.Checked = user.Active;
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace QuoteTool.Managers
         {
             using (var db = new NpgsqlConnection(connString))
             {
-               // db.BulkDelete<Quote>();
+                db.Execute("TRUNCATE TABLE quotes");
             }
         }
 
@@ -98,7 +98,7 @@ namespace QuoteTool.Managers
             Equity equity = new Equity();
             using (var db = new NpgsqlConnection(connString))
             {
-                var x = db.Query<dynamic>("SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol}).FirstOrDefault();
+                equity = db.Query<Equity>("SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol}).FirstOrDefault();
             }
 
             List<Quote> quoteList = new List<Quote>();
@@ -131,8 +131,8 @@ namespace QuoteTool.Managers
         {
             using (var db = new NpgsqlConnection(connString))
             {
-                var q = db.QuerySingleOrDefault<Quote>("SELECT MAX(date) FROM quotes");
-                return q.Date;
+                var q = db.ExecuteScalar<DateTime>("SELECT MAX(date) FROM quotes");
+                return q;
             }
         }
 
@@ -197,6 +197,8 @@ namespace QuoteTool.Managers
             }
         }
 
+        #region user methods
+
         public static List<User> GetAllUsers()
         {
             List<User> userList = new List<User>();
@@ -208,5 +210,47 @@ namespace QuoteTool.Managers
 
             return userList;
         }
+
+        public static User GetUser(string userName)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                return db.QueryFirstOrDefault<User>("SELECT * FROM users WHERE user_name = @p1", new { p1 = userName });
+            }
+
+        }
+
+        public static bool AddUser(User user)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = @"INSERT INTO users 
+                                (user_name, password, active)
+                               VALUES (@p1, @p2, @p3)";
+
+                int x = db.Execute(sql, new { p1 = user.UserName, p2 = user.Password, p3 = user.Active });
+
+                return (x == 1);
+            }
+        }
+
+        public static bool UpdateUser(User user)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = @"UPDATE users 
+                               SET user_name = @p1,
+                                   password = @p2,
+                                   active = @p3
+                               WHERE id = @p4";
+
+                int x = db.Execute(sql, new { p1 = user.UserName, p2 = user.Password, p3 = user.Active, p4 = user.Id });
+
+                return (x == 1);
+            }
+        }
+
+        #endregion
+
     }
 }

@@ -135,6 +135,7 @@
             this.btnClearItems.TabIndex = 11;
             this.btnClearItems.Text = "Clear Selected";
             this.btnClearItems.UseVisualStyleBackColor = false;
+            this.btnClearItems.Click += new System.EventHandler(this.BtnClearItems_Click_1);
             // 
             // rbAbsolute
             // 

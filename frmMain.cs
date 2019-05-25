@@ -46,19 +46,8 @@ namespace QuoteTool
             UpdateLastQuoteDate();
 
             this.Refresh();
-        }
+        }       
        
-        private void BtnGetQuotes_Click(object sender, EventArgs e)
-        {
-            //DateTime date = DataAccess.GetMaxDate().Date;
-            //pbMain.Value = 0;
-            //pbMain.Visible = true;
-            //ActiveList.Symbols.ForEach(s => { pbMain.Value = pbMain.Value + 10; DataAccess.AddQuoteForDate(s.Symbol, date); });
-            //UpdateLastQuoteDate();
-            //pbMain.Visible = false;
-
-            //this.Refresh();
-        }
 
         private void UpdateLastQuoteDate()
         {           
@@ -143,13 +132,6 @@ namespace QuoteTool
 
         }
 
-
-
-        private void BtnClearItems_Click(object sender, EventArgs e)
-        {
-            ClearSymbolsListBox();
-        }
-
         private void ClearSymbolsListBox()
         {
             lbSymbols.SelectedItems.Clear();
@@ -181,6 +163,11 @@ namespace QuoteTool
         {
             frmAdmin f = new frmAdmin();
             f.Show();
+        }
+
+        private void BtnClearItems_Click_1(object sender, EventArgs e)
+        {
+            ClearSymbolsListBox();
         }
     }
 }

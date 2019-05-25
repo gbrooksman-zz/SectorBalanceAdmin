@@ -11,8 +11,7 @@ namespace QuoteTool
 
         int equityCount = 0;
         int equityFactor = 0;
-
-        List<Equity> equityList = new List<Equity>();
+        readonly List<Equity> equityList = new List<Equity>();
 
         public frmAdmin()
         {
@@ -27,7 +26,8 @@ namespace QuoteTool
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-
+            DataAccess.DeleteAllQuotes();
+            equityList.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.FetchFiveYearQuotes(_.Symbol); });
         }
 
         private void BtnGetQuotes_Click(object sender, EventArgs e)
