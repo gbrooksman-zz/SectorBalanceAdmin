@@ -37,9 +37,6 @@
     <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="Dapper.FastCrud, Version=2.5.0.39, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Dapper.FastCrud.2.5.0.39\lib\net46\Dapper.FastCrud.dll</HintPath>
-    </Reference>
     <Reference Include="IEXTradingDotNetCore, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\IEXTradingApi.1.0.26\lib\netstandard2.0\IEXTradingDotNetCore.dll</HintPath>
     </Reference>
@@ -139,7 +136,6 @@
     <Compile Include="Models\ManagerResult.cs" />
     <Compile Include="Models\ModelEquity.cs" />
     <Compile Include="Models\Quote.cs" />
-    <Compile Include="Models\ETFItem.cs" />
     <Compile Include="Models\EquityGroup.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserModel.cs" />

@@ -17,10 +17,10 @@ namespace QuoteTool.Models
         [Column("id")]
         public Guid Id { get; set; }
 
-        [Column("name")]
-        public string Name { get; set; }
+        [Column("symbol_name")]
+        public string SymbolName { get; set; }
 
         [Column("symbol")]
-        public string Symbol { get; set; }
+        public string Symbol { get; set; }      
     }
 }

@@ -20,10 +20,10 @@ namespace QuoteTool
             InitializeComponent();
         }
 
+        private List<Equity> equityList = new List<Equity>();
+
         private void FrmMsin_Load(object sender, EventArgs e)
         {
-            DataAccess.Init();
-
             chartQuotes.Visible = false;
             chartQuotes.Height = (int)(this.Height * .8);
             chartQuotes.Width = (int)(this.Width * .75);
@@ -39,7 +39,9 @@ namespace QuoteTool
             dtpStart.Value = DateTime.Now.AddYears(-5);
             dtpStop.Value = DateTime.Now;
 
-            ActiveList.Symbols.ForEach(s => { lbSymbols.Items.Add(s.Name); });
+            equityList = DataAccess.GetEquityList();
+
+            equityList.ForEach(s => { lbSymbols.Items.Add(s.Symbol); });
 
             UpdateLastQuoteDate();
 
@@ -74,8 +76,9 @@ namespace QuoteTool
             foreach (var item in lbSymbols.SelectedItems)
             {
                 DataRowView drwItem = item as DataRowView;
-                var quoteItem = ActiveList.Symbols.Where(q => q.Name == item.ToString()).First();
-                RenderSeries(quoteItem.Symbol, startDate, endDate, quoteItem.Name);
+                List<Equity> equityList = DataAccess.GetEquityList();
+                var quoteItem = equityList.Where(q => q.Symbol == item.ToString()).First();
+                RenderSeries(quoteItem.Symbol, startDate, endDate, quoteItem.SymbolName);
             }
 
             chartQuotes.Visible = true;
@@ -165,8 +168,10 @@ namespace QuoteTool
             foreach (var item in lbSymbols.SelectedItems)
             {
                 DataRowView drwItem = item as DataRowView;
-                var quoteItem = ActiveList.Symbols.Where(q => q.Name == item.ToString()).First();
-                RenderRateOfChangeSeries(quoteItem.Symbol, startDate, endDate, quoteItem.Name);
+                List<Equity> equityList = DataAccess.GetEquityList();
+
+                var quoteItem = equityList.Where(q => q.Symbol == item.ToString()).First();
+                RenderRateOfChangeSeries(quoteItem.Symbol, startDate, endDate, quoteItem.SymbolName);
             }
 
             chartQuotes.Visible = true;

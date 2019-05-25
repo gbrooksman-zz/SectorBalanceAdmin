@@ -17,7 +17,5 @@ namespace QuoteTool.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
-
-
     }
 }

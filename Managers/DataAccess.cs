@@ -10,9 +10,7 @@ using Newtonsoft.Json;
 using Npgsql;
 using NpgsqlTypes;
 using Dapper;
-using Dapper.FastCrud;
 using Newtonsoft.Json.Linq;
-
 
 namespace QuoteTool.Managers
 {
@@ -28,21 +26,17 @@ namespace QuoteTool.Managers
 
             //this is required to work corrrectly with column name annotations in the Models classes
             DefaultTypeMap.MatchNamesWithUnderscores = true;
+
         }
 
         public static void DeleteAllQuotes()
         {
             using (var db = new NpgsqlConnection(connString))
             {
-                db.BulkDelete<Quote>();
+               // db.BulkDelete<Quote>();
             }
         }
 
-        public static void Init()
-        {
-
-        }
-        
         public static void FetchFiveYearQuotes(string symbol)
         {                
             try
@@ -75,7 +69,20 @@ namespace QuoteTool.Managers
                      
                         if (quote.Date.Date >= date.Date)
                         {
-                           db.Insert(quote);
+
+                           // db.Insert<Quote>(quote);
+
+                            string sql = @"INSERT INTO quotes 
+                                            (date,price,volume,equity_id, rate_of_change)
+                                            VALUES (@p1,@p2,@p3,@p4,@p5)";
+                            db.Execute(sql, new
+                            {
+                                p1 = quote.Date,
+                                p2 = quote.Price,
+                                p3 = quote.Volume,
+                                p4 = quote.EquityId,
+                                p5 = quote.RateOfChange
+                            });
                         }
                     }
                 }
@@ -91,15 +98,15 @@ namespace QuoteTool.Managers
             Equity equity = new Equity();
             using (var db = new NpgsqlConnection(connString))
             {
-                equity = db.QuerySingleOrDefault<Equity>("SELECT * FROM equities WHERE symbol = @s", symbol);
+                var x = db.Query<dynamic>("SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol}).FirstOrDefault();
             }
 
             List<Quote> quoteList = new List<Quote>();
 
             using (var db = new NpgsqlConnection(connString))
             {
-                string sql = "SELECT * FROM quotes WHERE equity_id = @eid AND date BETWEEN @d1 AND @d2";
-                quoteList = db.Query<Quote>(sql, new { equity.Id, startDate, endDate }).ToList();             
+                string sql = "SELECT * FROM quotes WHERE equity_id = @p1 AND date BETWEEN @p2 AND @p3";
+                quoteList = db.Query<Quote>(sql, new { p1 = equity.Id, p2 = startDate, p3 = endDate }).ToList();             
             }
             return quoteList;
         }
@@ -133,7 +140,7 @@ namespace QuoteTool.Managers
         {
             using (var db = new NpgsqlConnection(connString))
             {
-               return db.QuerySingleOrDefault<Equity>("SELECT * FROM equities WHERE symbol = @s", symbol);
+               return db.QuerySingleOrDefault<Equity>(@"SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol } );
             }
         }
 
@@ -175,11 +182,20 @@ namespace QuoteTool.Managers
                 foreach (var stock in quoteArray)
                 {
                     Quote quote = BuildQuoteFromJSON(quoteArray, stock, equity);
-                    db.Insert(quote);
+                    string sql = @"INSERT INTO quotes 
+                                            (date,price,volume,equity_id, rate_of_change)
+                                            VALUES (@p1,@p2,@p3,@p4,@p5)";
+                    db.Execute(sql, new
+                    {
+                        p1 = quote.Date,
+                        p2 = quote.Price,
+                        p3 = quote.Volume,
+                        p4 = quote.EquityId,
+                        p5 = quote.RateOfChange
+                    });
                 }
             }
         }
-
 
         public static List<User> GetAllUsers()
         {
@@ -187,12 +203,10 @@ namespace QuoteTool.Managers
 
             using (var db = new NpgsqlConnection(connString))
             {
-               userList = db.Query<User>("SELECT user_name, password, active, id, created_at, updated_at FROM users").ToList();
+               userList = db.Query<User>("SELECT * FROM users").ToList();
             }
 
             return userList;
         }
-
-
     }
 }

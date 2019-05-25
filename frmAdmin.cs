@@ -12,6 +12,8 @@ namespace QuoteTool
         int equityCount = 0;
         int equityFactor = 0;
 
+        List<Equity> equityList = new List<Equity>();
+
         public frmAdmin()
         {
             InitializeComponent();
@@ -19,6 +21,8 @@ namespace QuoteTool
             equityCount = DataAccess.GetEquityCount();
 
             if (equityCount > 0) equityFactor = 100 / equityCount;
+
+            equityList = DataAccess.GetEquityList();
         }
 
         private void BtnUpdate_Click(object sender, EventArgs e)
@@ -31,7 +35,9 @@ namespace QuoteTool
             DateTime date = DataAccess.GetMaxDate().Date;
             pbMain.Value = 0;
             pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.AddQuoteForDate(_.Symbol, date); });
+
+            equityList.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.AddQuoteForDate(_.Symbol, date); });
+
             UpdateLastQuoteDate();
             pbMain.Visible = false;
 
@@ -63,7 +69,7 @@ namespace QuoteTool
                 ListViewItem itm;
                 string[] arr = new string[4];
                 arr[0] = _.Symbol;
-                arr[1] = _.Name;
+                arr[1] = _.SymbolName;
                 arr[2] = _.CreatedAt.ToShortDateString();
                 arr[3] = _.UpdatedAt.ToShortDateString();
                 itm = new ListViewItem(arr);
@@ -98,7 +104,9 @@ namespace QuoteTool
         {
             pbMain.Value = 0;
             pbMain.Visible = true;
-            ActiveList.Symbols.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.FetchFiveYearQuotes(_.Symbol); });
+
+            equityList.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.FetchFiveYearQuotes(_.Symbol); });
+
             pbMain.Visible = false;
         }
 
