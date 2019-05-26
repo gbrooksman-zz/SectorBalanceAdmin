@@ -39,15 +39,21 @@ namespace QuoteTool
             dtpStart.Value = DateTime.Now.AddYears(-5);
             dtpStop.Value = DateTime.Now;
 
-            equityList = DataAccess.GetEquityList();
-
-            equityList.ForEach(s => { lbSymbols.Items.Add(s.Symbol); });
+            LoadEquityList();
 
             UpdateLastQuoteDate();
 
             this.Refresh();
         }       
        
+        private void LoadEquityList()
+        {
+            lbSymbols.Items.Clear();
+
+            equityList = DataAccess.GetEquityList();
+
+            equityList.ForEach(s => { lbSymbols.Items.Add(s.Symbol); });
+        }
 
         private void UpdateLastQuoteDate()
         {           
@@ -168,6 +174,11 @@ namespace QuoteTool
         private void BtnClearItems_Click_1(object sender, EventArgs e)
         {
             ClearSymbolsListBox();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

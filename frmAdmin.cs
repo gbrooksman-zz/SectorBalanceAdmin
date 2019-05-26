@@ -28,6 +28,10 @@ namespace QuoteTool
         {
             DataAccess.DeleteAllQuotes();
             equityList.ForEach(_ => { pbMain.Value += equityFactor; DataAccess.FetchFiveYearQuotes(_.Symbol); });
+
+            pbMain.Value = 0;
+            pbMain.Visible = false;
+            MessageBox.Show("population of quotes finished");
         }
 
         private void BtnGetQuotes_Click(object sender, EventArgs e)
@@ -54,7 +58,6 @@ namespace QuoteTool
             pbMain.Minimum = 0;
             pbMain.Maximum = 100;
 
-            List<Equity> equityList = DataAccess.GetEquityList();
             lvEquities.View = View.Details;
             lvEquities.GridLines = true;
             lvEquities.FullRowSelect = true;
@@ -63,6 +66,15 @@ namespace QuoteTool
             lvEquities.Columns.Add("Name", 300);
             lvEquities.Columns.Add("Created", 100);
             lvEquities.Columns.Add("Updated", 100);
+
+            LoadListView();
+        }
+                
+        private void LoadListView()
+        {
+            lvEquities.Items.Clear();
+
+            List<Equity> equityList = DataAccess.GetEquityList();
 
             equityList.ForEach(_ =>
             {
@@ -76,8 +88,6 @@ namespace QuoteTool
                 lvEquities.Items.Add(itm);
             });
         }
-                
-
 
         private void Label1_Click(object sender, EventArgs e)
         {
@@ -86,7 +96,9 @@ namespace QuoteTool
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            DataAccess.AddEquity(txtAddEquity.Text, txtEquityName.Text);
 
+            LoadListView();
         }
 
 
@@ -120,6 +132,11 @@ namespace QuoteTool
         {
             frmEquityGroups f = new frmEquityGroups();
             f.Show();
+        }
+
+        private void Label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

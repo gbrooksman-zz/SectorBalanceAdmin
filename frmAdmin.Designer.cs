@@ -35,10 +35,14 @@
             this.lblLastFetch = new System.Windows.Forms.Label();
             this.txtLastDate = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnAdEquity = new System.Windows.Forms.Button();
             this.btnUsers = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.lvEquities = new System.Windows.Forms.ListView();
+            this.txtAddEquity = new System.Windows.Forms.TextBox();
+            this.txtEquityName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnUpdate
@@ -80,9 +84,9 @@
             // pbMain
             // 
             this.pbMain.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pbMain.Location = new System.Drawing.Point(0, 427);
+            this.pbMain.Location = new System.Drawing.Point(0, 519);
             this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(819, 23);
+            this.pbMain.Size = new System.Drawing.Size(1224, 23);
             this.pbMain.TabIndex = 7;
             // 
             // lblLastFetch
@@ -114,17 +118,17 @@
             this.label1.Text = "Equities";
             this.label1.Click += new System.EventHandler(this.Label1_Click);
             // 
-            // button1
+            // btnAdEquity
             // 
-            this.button1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(557, 16);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 32);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Add Equity";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.btnAdEquity.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnAdEquity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdEquity.Location = new System.Drawing.Point(901, 209);
+            this.btnAdEquity.Name = "btnAdEquity";
+            this.btnAdEquity.Size = new System.Drawing.Size(126, 32);
+            this.btnAdEquity.TabIndex = 20;
+            this.btnAdEquity.Text = "Add Equity";
+            this.btnAdEquity.UseVisualStyleBackColor = false;
+            this.btnAdEquity.Click += new System.EventHandler(this.Button1_Click);
             // 
             // btnUsers
             // 
@@ -160,15 +164,55 @@
             this.lvEquities.TabIndex = 26;
             this.lvEquities.UseCompatibleStateImageBehavior = false;
             // 
+            // txtAddEquity
+            // 
+            this.txtAddEquity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddEquity.Location = new System.Drawing.Point(901, 109);
+            this.txtAddEquity.Name = "txtAddEquity";
+            this.txtAddEquity.Size = new System.Drawing.Size(110, 26);
+            this.txtAddEquity.TabIndex = 27;
+            // 
+            // txtEquityName
+            // 
+            this.txtEquityName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEquityName.Location = new System.Drawing.Point(901, 165);
+            this.txtEquityName.Name = "txtEquityName";
+            this.txtEquityName.Size = new System.Drawing.Size(311, 26);
+            this.txtEquityName.TabIndex = 28;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(898, 86);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(61, 20);
+            this.label2.TabIndex = 29;
+            this.label2.Text = "Symbol";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(898, 142);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 20);
+            this.label3.TabIndex = 30;
+            this.label3.Text = "Name";
+            // 
             // frmAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(819, 450);
+            this.ClientSize = new System.Drawing.Size(1224, 542);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.txtEquityName);
+            this.Controls.Add(this.txtAddEquity);
             this.Controls.Add(this.lvEquities);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.btnUsers);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAdEquity);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblLastFetch);
             this.Controls.Add(this.txtLastDate);
@@ -194,9 +238,13 @@
         private System.Windows.Forms.Label lblLastFetch;
         private System.Windows.Forms.TextBox txtLastDate;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnAdEquity;
         private System.Windows.Forms.Button btnUsers;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ListView lvEquities;
+        private System.Windows.Forms.TextBox txtAddEquity;
+        private System.Windows.Forms.TextBox txtEquityName;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

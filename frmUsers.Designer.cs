@@ -37,6 +37,7 @@
             this.txtUserId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.btnSaveUser = new System.Windows.Forms.Button();
+            this.btnUserModels = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvUsers
@@ -118,11 +119,23 @@
             this.btnSaveUser.UseVisualStyleBackColor = true;
             this.btnSaveUser.Click += new System.EventHandler(this.BtnSaveUser_Click);
             // 
+            // btnUserModels
+            // 
+            this.btnUserModels.Location = new System.Drawing.Point(24, 495);
+            this.btnUserModels.Name = "btnUserModels";
+            this.btnUserModels.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.btnUserModels.Size = new System.Drawing.Size(75, 23);
+            this.btnUserModels.TabIndex = 9;
+            this.btnUserModels.Text = "Models";
+            this.btnUserModels.UseVisualStyleBackColor = true;
+            this.btnUserModels.Click += new System.EventHandler(this.BtnUserModels_Click);
+            // 
             // frmUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(966, 541);
+            this.Controls.Add(this.btnUserModels);
             this.Controls.Add(this.btnSaveUser);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtUserId);
@@ -152,5 +165,6 @@
         private System.Windows.Forms.TextBox txtUserId;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnSaveUser;
+        private System.Windows.Forms.Button btnUserModels;
     }
 }

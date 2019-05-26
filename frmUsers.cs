@@ -82,11 +82,6 @@ namespace QuoteTool
             }
 
             LoadUserGrid();
-
-
-
-
-
         }
 
         private void LvUsers_SelectedIndexChanged(object sender, EventArgs e)
@@ -100,6 +95,12 @@ namespace QuoteTool
                 txtPassword.Text = user.Password;
                 chkActive.Checked = user.Active;
             }
+        }
+
+        private void BtnUserModels_Click(object sender, EventArgs e)
+        {
+            frmUserModels f = new frmUserModels(Guid.Parse(txtUserId.Text));
+            f.Show();
         }
     }
 }

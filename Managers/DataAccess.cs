@@ -29,6 +29,8 @@ namespace QuoteTool.Managers
 
         }
 
+        #region quote methods
+
         public static void DeleteAllQuotes()
         {
             using (var db = new NpgsqlConnection(connString))
@@ -93,57 +95,6 @@ namespace QuoteTool.Managers
             }
         }
 
-        public static List<Quote> LookupAllQuotes(string symbol, DateTime startDate, DateTime endDate)
-        {
-            Equity equity = new Equity();
-            using (var db = new NpgsqlConnection(connString))
-            {
-                equity = db.Query<Equity>("SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol}).FirstOrDefault();
-            }
-
-            List<Quote> quoteList = new List<Quote>();
-
-            using (var db = new NpgsqlConnection(connString))
-            {
-                string sql = "SELECT * FROM quotes WHERE equity_id = @p1 AND date BETWEEN @p2 AND @p3";
-                quoteList = db.Query<Quote>(sql, new { p1 = equity.Id, p2 = startDate, p3 = endDate }).ToList();             
-            }
-            return quoteList;
-        }
-
-        public static List<Equity> GetEquityList()
-        {
-            using (var db = new NpgsqlConnection(connString))
-            { 
-               return db.Query<Equity>("SELECT * FROM equities").ToList();
-            }
-        }
-
-        public static int GetEquityCount()
-        {
-            using (var db = new NpgsqlConnection(connString))
-            {
-                return db.QueryFirstOrDefault<int>("SELECT count(*) FROM equities");
-            }
-        }
-
-        public static DateTime GetMaxDate()
-        {
-            using (var db = new NpgsqlConnection(connString))
-            {
-                var q = db.ExecuteScalar<DateTime>("SELECT MAX(date) FROM quotes");
-                return q;
-            }
-        }
-
-        private static Equity BuildEquityFromSymbol(string symbol)
-        {
-            using (var db = new NpgsqlConnection(connString))
-            {
-               return db.QuerySingleOrDefault<Equity>(@"SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol } );
-            }
-        }
-
         private static Quote BuildQuoteFromJSON(JArray quoteArray, JToken stock, Equity equity)
         {
             decimal priorPrice = 0;
@@ -156,13 +107,13 @@ namespace QuoteTool.Managers
             }
 
             return new Quote
-                {
-                    Date = DateTime.Parse(stock["date"].ToString()).Date,
-                    Price = price,
-                    EquityId = equity.Id,
-                    Volume = int.Parse(stock["volume"].ToString()),
-                    RateOfChange = CalculateRateOfChange(price, priorPrice)
-                };
+            {
+                Date = DateTime.Parse(stock["date"].ToString()).Date,
+                Price = price,
+                EquityId = equity.Id,
+                Volume = int.Parse(stock["volume"].ToString()),
+                RateOfChange = CalculateRateOfChange(price, priorPrice)
+            };
         }
 
         private static decimal CalculateRateOfChange(decimal closingPrice, decimal closingPricePrior)
@@ -196,6 +147,86 @@ namespace QuoteTool.Managers
                 }
             }
         }
+
+        public static List<Quote> LookupAllQuotes(string symbol, DateTime startDate, DateTime endDate)
+        {
+            Equity equity = new Equity();
+            using (var db = new NpgsqlConnection(connString))
+            {
+                equity = db.Query<Equity>("SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol}).FirstOrDefault();
+            }
+
+            List<Quote> quoteList = new List<Quote>();
+
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = "SELECT * FROM quotes WHERE equity_id = @p1 AND date BETWEEN @p2 AND @p3";
+                quoteList = db.Query<Quote>(sql, new { p1 = equity.Id, p2 = startDate, p3 = endDate }).ToList();             
+            }
+            return quoteList;
+        }
+
+        #endregion
+
+        #region equity methods
+
+        public static List<Equity> GetEquityList()
+        {
+            using (var db = new NpgsqlConnection(connString))
+            { 
+               return db.Query<Equity>("SELECT * FROM equities").ToList();
+            }
+        }
+
+        public static Equity GetEquity(Guid equityId)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                return db.Query<Equity>("SELECT * FROM equities WHERE id = @p1", new { p1 = equityId } ).FirstOrDefault();
+            }
+        }
+
+        public static int GetEquityCount()
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                return db.QueryFirstOrDefault<int>("SELECT count(*) FROM equities");
+            }
+        }
+
+        public static DateTime GetMaxDate()
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                var q = db.ExecuteScalar<DateTime>("SELECT MAX(date) FROM quotes");
+                return q;
+            }
+        }
+
+        private static Equity BuildEquityFromSymbol(string symbol)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+               return db.QuerySingleOrDefault<Equity>(@"SELECT * FROM equities WHERE symbol = @p1", new { p1 = symbol } );
+            }
+        }
+
+        public static bool AddEquity(string symbol, string symbolName)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = @"INSERT INTO equities (symbol, symbol_name)
+                                VALUES ( @p1, @p2 )";
+
+                int x = db.Execute(sql, new { p1 = symbol, p2 = symbolName });
+
+                return (x == 1);
+            }
+        }
+
+        #endregion
+
+      
 
         #region user methods
 
@@ -252,5 +283,29 @@ namespace QuoteTool.Managers
 
         #endregion
 
+
+        #region user models
+
+        public static List<UserModel> GetModelsForUser(Guid userId)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = "SELECT * FROM user_models WHERE user_id = @p1 AND active = true";
+
+                return db.Query<UserModel>(sql, new { p1 = userId } ).ToList();
+            }
+        }
+
+        public static List<ModelEquity> GetEquitiesForModel(Guid modelId)
+        {
+            using (var db = new NpgsqlConnection(connString))
+            {
+                string sql = "SELECT * FROM model_equities WHERE model_id = @p1 ";
+
+                return db.Query<ModelEquity>(sql, new { p1 = modelId }).ToList();
+            }
+        }
+
+        #endregion
     }
 }

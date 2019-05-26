@@ -45,6 +45,7 @@
             this.btnAnalyze = new System.Windows.Forms.Button();
             this.rtbAnalysis = new System.Windows.Forms.RichTextBox();
             this.btnAdmin = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartQuotes)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,7 +92,7 @@
             // 
             this.dtpStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStart.Location = new System.Drawing.Point(12, 358);
+            this.dtpStart.Location = new System.Drawing.Point(12, 397);
             this.dtpStart.Name = "dtpStart";
             this.dtpStart.Size = new System.Drawing.Size(196, 26);
             this.dtpStart.TabIndex = 7;
@@ -101,7 +102,7 @@
             this.dtpStop.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpStop.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStop.Location = new System.Drawing.Point(12, 420);
+            this.dtpStop.Location = new System.Drawing.Point(12, 459);
             this.dtpStop.Name = "dtpStop";
             this.dtpStop.Size = new System.Drawing.Size(196, 26);
             this.dtpStop.TabIndex = 8;
@@ -110,7 +111,7 @@
             // 
             this.lblStatrDate.AutoSize = true;
             this.lblStatrDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatrDate.Location = new System.Drawing.Point(12, 335);
+            this.lblStatrDate.Location = new System.Drawing.Point(12, 374);
             this.lblStatrDate.Name = "lblStatrDate";
             this.lblStatrDate.Size = new System.Drawing.Size(83, 20);
             this.lblStatrDate.TabIndex = 9;
@@ -120,7 +121,7 @@
             // 
             this.lblStopDate.AutoSize = true;
             this.lblStopDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStopDate.Location = new System.Drawing.Point(12, 397);
+            this.lblStopDate.Location = new System.Drawing.Point(12, 436);
             this.lblStopDate.Name = "lblStopDate";
             this.lblStopDate.Size = new System.Drawing.Size(77, 20);
             this.lblStopDate.TabIndex = 10;
@@ -142,7 +143,7 @@
             this.rbAbsolute.AutoSize = true;
             this.rbAbsolute.Checked = true;
             this.rbAbsolute.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbAbsolute.Location = new System.Drawing.Point(12, 470);
+            this.rbAbsolute.Location = new System.Drawing.Point(12, 509);
             this.rbAbsolute.Name = "rbAbsolute";
             this.rbAbsolute.Size = new System.Drawing.Size(90, 24);
             this.rbAbsolute.TabIndex = 12;
@@ -154,7 +155,7 @@
             // 
             this.rbRelative.AutoSize = true;
             this.rbRelative.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbRelative.Location = new System.Drawing.Point(12, 500);
+            this.rbRelative.Location = new System.Drawing.Point(12, 539);
             this.rbRelative.Name = "rbRelative";
             this.rbRelative.Size = new System.Drawing.Size(84, 24);
             this.rbRelative.TabIndex = 13;
@@ -164,7 +165,7 @@
             // txtLastDate
             // 
             this.txtLastDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLastDate.Location = new System.Drawing.Point(12, 560);
+            this.txtLastDate.Location = new System.Drawing.Point(12, 599);
             this.txtLastDate.Name = "txtLastDate";
             this.txtLastDate.Size = new System.Drawing.Size(196, 26);
             this.txtLastDate.TabIndex = 14;
@@ -173,7 +174,7 @@
             // 
             this.lblLastFetch.AutoSize = true;
             this.lblLastFetch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLastFetch.Location = new System.Drawing.Point(13, 537);
+            this.lblLastFetch.Location = new System.Drawing.Point(13, 576);
             this.lblLastFetch.Name = "lblLastFetch";
             this.lblLastFetch.Size = new System.Drawing.Size(124, 20);
             this.lblLastFetch.TabIndex = 15;
@@ -213,11 +214,23 @@
             this.btnAdmin.UseVisualStyleBackColor = false;
             this.btnAdmin.Click += new System.EventHandler(this.BtnAdmin_Click);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(12, 320);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(196, 30);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "Refresh List";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            // 
             // frmMsin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1117, 626);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnAdmin);
             this.Controls.Add(this.rtbAnalysis);
             this.Controls.Add(this.btnAnalyze);
@@ -260,6 +273,7 @@
         private System.Windows.Forms.Button btnAnalyze;
         private System.Windows.Forms.RichTextBox rtbAnalysis;
         private System.Windows.Forms.Button btnAdmin;
+        private System.Windows.Forms.Button button1;
     }
 }
 
